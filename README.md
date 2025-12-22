@@ -1,4 +1,9 @@
 https://ironnasekai.fandom.com/ja
+Thanks for registering at FontStruct.
+
+Please click on the following link to complete your registration :
+
+https://fontstruct.com/welcome/sign-up/confirm/hK7bIEchWuwwxSNfR61kUAhmgZUPLSuZN-5ePjkf0Lo
 https://suno.com/s/WX1ygOQoPL9zZMdS
 ## Bedrock Add-On Sample Files
 https://panel.freemcserver.net/user/confirm?token=oaR7u9x4NPRvRkKe37UzKUDUo6fxoreWILb7PRDSooWkp0fR7U_wGN4vVoAspty2jb2KK63VKFnk4S9HPfNlrKDu7p17l1WQ1WIjoczHctkRqnYIbnf9NIdQdqJM0fvt4eGa4Tr8z62fyiokGKBPZG89HiG-v9ouyVUnza-eTwq-EDVmFJJWkawdU5PYAFy0JyD3huDoxzvN2sChQCSK_WxKpiWBjRNLnsW8NUJLJ4G_DWWR6vh4xZG8RxZpLjD

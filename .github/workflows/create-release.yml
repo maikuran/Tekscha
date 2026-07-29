@@ -15,7 +15,7 @@ jobs:
 
       - name: Download Bedrock Samples zip
         run: |
-          curl -L -o bedrock-samples.zip https://github.com/Mojang/bedrock-samples/archive/refs/tags/v1.26.30.5.zip
+          curl -L -o bedrock-samples.zip https://github.com/Mojang/bedrock-samples/releases/download/v1.26.30.5/bedrock-samples-v1.26.30.5-min.zip
 
       - name: Unzip Bedrock Samples
         run: |

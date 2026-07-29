@@ -92,5 +92,7 @@ jobs:
             exit 0
           fi
 
+
+          git pull
           git commit -m "Update Bedrock Samples"
           git push origin HEAD:main

@@ -18,12 +18,12 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y imagemagick
 
       - name: Create destination directory
-        run: mkdir -p pack/textures/block
+        run: mkdir -p pack/textures/blocks
 
       - name: Move and darken textures
         run: |
           SRC_DIR="resource_pack/textures/blocks"
-          DEST_DIR="Pack/textures/block"
+          DEST_DIR="Pack/textures/blocks"
 
           # ディレクトリ存在確認
           if [ ! -d "$SRC_DIR" ]; then

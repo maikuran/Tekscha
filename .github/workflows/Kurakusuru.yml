@@ -56,7 +56,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add Pack/textures/block
+          git add Pack/textures/blocks
           git pull
           git commit -m "Move and darken block textures"
           git push

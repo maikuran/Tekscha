@@ -47,26 +47,29 @@ jobs:
             "$RUNNER_TEMP/bedrock-samples.zip" \
             -d "$RUNNER_TEMP/bedrock-samples/extracted"
 
-      - name: Copy Bedrock Samples to repository
+      - name: Verify extracted files
+        shell: bash
+        run: |
+          set -e
+
+          SOURCE="$RUNNER_TEMP/bedrock-samples/extracted/bedrock-samples-${VERSION}"
+
+          if [ ! -d "$SOURCE" ]; then
+            echo "ERROR: Extracted Bedrock Samples directory was not found."
+            find "$RUNNER_TEMP/bedrock-samples/extracted" -maxdepth 2 -type d
+            exit 1
+          fi
+
+      - name: Copy files to main repository
         shell: bash
         run: |
           set -e
 
           SOURCE="$RUNNER_TEMP/bedrock-samples/extracted/bedrock-samples-1.26.30.5"
 
-          if [ ! -d "$SOURCE" ]; then
-            echo "ERROR: Bedrock Samples directory not found:"
-            echo "$SOURCE"
-            exit 1
-          fi
-
-          echo "Copying Bedrock Samples..."
-
           cp -a "$SOURCE"/. ./
 
-          echo "Copy completed."
-
-      - name: Clean temporary files
+      - name: Remove temporary files
         shell: bash
         run: |
           rm -rf "$RUNNER_TEMP/bedrock-samples"
@@ -92,7 +95,5 @@ jobs:
             exit 0
           fi
 
-
-          git pull
           git commit -m "Update Bedrock Samples"
-          git push
+          git push origin HEAD:main

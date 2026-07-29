@@ -15,7 +15,7 @@ jobs:
 
       - name: Download Bedrock Samples zip
         run: |
-          curl -L -o bedrock-samples.zip https://github.com/Mojang/bedrock-samples/archive/refs/tags/v26.33.zip
+          curl -L -o bedrock-samples.zip https://github.com/Mojang/bedrock-samples/archive/refs/tags/v1.26.30.5.zip
 
       - name: Unzip Bedrock Samples
         run: |
@@ -24,7 +24,7 @@ jobs:
 
       - name: Move extracted files to repository root (optional)
         run: |
-          mv bedrock-samples/bedrock-samples-26.33/* .
+          mv bedrock-samples/bedrock-samples-1.26.30.5/* .
           rm -rf bedrock-samples
 
       - name: Commit and push changes

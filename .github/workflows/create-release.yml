@@ -24,7 +24,7 @@ jobs:
 
       - name: Move extracted files to repository root (optional)
         run: |
-          mv bedrock-samples/bedrock-samples-1.26.30.5-min/* .
+          mv bedrock-samples/bedrock-samples-v1.26.30.5-min/* .
           rm -rf bedrock-samples
 
       - name: Commit and push changes

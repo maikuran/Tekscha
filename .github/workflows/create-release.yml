@@ -1,9 +1,13 @@
 name: Download and Upload Bedrock Samples
 
 on:
-  workflow_dispatch:  # 手動実行
+  workflow_dispatch:
+
   schedule:
-    - cron: '0 12 * * *'  # 毎日12時に自動実行（任意で削除可）
+    - cron: "0 12 * * *"
+
+permissions:
+  contents: write
 
 jobs:
   download_and_upload:
@@ -15,27 +19,47 @@ jobs:
 
       - name: Download Bedrock Samples zip
         run: |
-          curl -L -o bedrock-samples.zip https://github.com/Mojang/bedrock-samples/releases/download/v1.26.30.5/bedrock-samples-v1.26.30.5-min.zip
+          curl -fL \
+            -o bedrock-samples.zip \
+            https://github.com/Mojang/bedrock-samples/releases/download/v1.26.30.5/bedrock-samples-v1.26.30.5-min.zip
 
       - name: Unzip Bedrock Samples
         run: |
-          unzip bedrock-samples.zip -d bedrock-samples
+          rm -rf bedrock-samples
+          mkdir -p bedrock-samples
+          unzip -q bedrock-samples.zip -d bedrock-samples
           rm bedrock-samples.zip
 
-      - name: Move extracted files to repository root (optional)
+      - name: Find extracted files
         run: |
-          mv bedrock-samples/bedrock-samples-v1.26.30.5-min/* .
+          echo "=== Extracted structure ==="
+          find bedrock-samples -maxdepth 3 -print
+
+      - name: Move extracted files to repository root
+        run: |
+          ROOT=$(find bedrock-samples -mindepth 1 -maxdepth 1 -type d | head -n 1)
+
+          if [ -z "$ROOT" ]; then
+            echo "Error: extracted root directory not found."
+            exit 1
+          fi
+
+          echo "Using extracted directory: $ROOT"
+
+          cp -a "$ROOT"/. .
+
           rm -rf bedrock-samples
 
       - name: Commit and push changes
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
           git add .
+
           if git diff --cached --quiet; then
             echo "No changes to commit."
           else
-            git commit -m "Update Bedrock samples v1.21.120.4"
+            git commit -m "Update Bedrock samples v1.26.30.5"
             git push
           fi

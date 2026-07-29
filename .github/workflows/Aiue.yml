@@ -6,10 +6,6 @@ on:
   schedule:
     - cron: "0 12 * * *"
 
-  push:
-    branches:
-      - main
-
 permissions:
   contents: write
 
@@ -24,27 +20,68 @@ jobs:
           ref: main
           fetch-depth: 0
 
-      - name: Download Bedrock Samples zip
+      - name: Download Bedrock Samples
+        shell: bash
         run: |
-          curl -fL -o bedrock-samples.zip \
-            https://github.com/Mojang/bedrock-samples/archive/refs/tags/v1.26.30.5.zip
+          set -e
 
-      - name: Unzip Bedrock Samples
+          VERSION="1.26.30.5"
+          URL="https://github.com/Mojang/bedrock-samples/archive/refs/tags/v${VERSION}.zip"
+
+          rm -rf "$RUNNER_TEMP/bedrock-samples"
+          mkdir -p "$RUNNER_TEMP/bedrock-samples"
+
+          curl -fL --retry 5 --retry-delay 3 \
+            -o "$RUNNER_TEMP/bedrock-samples.zip" \
+            "$URL"
+
+      - name: Extract Bedrock Samples
+        shell: bash
         run: |
-          rm -rf bedrock-samples
-          unzip -q bedrock-samples.zip -d bedrock-samples
-          rm bedrock-samples.zip
+          set -e
 
-      - name: Move extracted files to repository root
+          rm -rf "$RUNNER_TEMP/bedrock-samples/extracted"
+          mkdir -p "$RUNNER_TEMP/bedrock-samples/extracted"
+
+          unzip -q \
+            "$RUNNER_TEMP/bedrock-samples.zip" \
+            -d "$RUNNER_TEMP/bedrock-samples/extracted"
+
+      - name: Copy Bedrock Samples to repository
+        shell: bash
         run: |
-          rsync -a --delete \
-            bedrock-samples/bedrock-samples-1.26.30.5/ \
-            ./
+          set -e
 
-          rm -rf bedrock-samples
+          SOURCE="$RUNNER_TEMP/bedrock-samples/extracted/bedrock-samples-1.26.30.5"
 
-      - name: Commit and push changes to main
+          if [ ! -d "$SOURCE" ]; then
+            echo "ERROR: Bedrock Samples directory not found:"
+            echo "$SOURCE"
+            exit 1
+          fi
+
+          echo "Copying Bedrock Samples..."
+
+          cp -a "$SOURCE"/. ./
+
+          echo "Copy completed."
+
+      - name: Clean temporary files
+        shell: bash
         run: |
+          rm -rf "$RUNNER_TEMP/bedrock-samples"
+          rm -f "$RUNNER_TEMP/bedrock-samples.zip"
+
+      - name: Check changes
+        shell: bash
+        run: |
+          git status --short
+
+      - name: Commit and push to main
+        shell: bash
+        run: |
+          set -e
+
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
